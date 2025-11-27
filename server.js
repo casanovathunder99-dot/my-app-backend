@@ -9,14 +9,16 @@ const userRoutes = require('./routes/users');
 const videoRoutes = require('./routes/videos');
 const commentRoutes = require('./routes/comments');
 const errorHandler = require('./middleware/errorHandler');
-
+const authRoutes = require("./routes/auth");
+const videoRoutes = require("./routes/videos");
 const app = express();
 
 // Security middleware
 app.use(helmet());
 app.use(express.json());
 app.use(cors({ origin: process.env.FRONTEND_URL || true }));
-
+app.use("/api/auth", authRoutes);
+app.use("/api/videos", videoRoutes);
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 200
@@ -41,3 +43,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
